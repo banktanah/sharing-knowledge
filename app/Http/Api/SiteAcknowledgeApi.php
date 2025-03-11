@@ -7,7 +7,8 @@ use App\Models\Dto\ApiResponse;
 use App\Models\SiteAcknowledge;
 use App\Services\PemanfaatanService;
 use App\Services\PerolehanService;
-
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class SiteAcknowledgeApi extends Controller
 {
@@ -29,9 +30,28 @@ class SiteAcknowledgeApi extends Controller
     }
 
     public function update(){
-        $params = request()->json();
+        $params = request()->json()->all();
 
-        // $data = $this->perolehanService->getDetail($params['site_name']);
+        $params = json_decode(json_encode($params));
+
+        try{
+            DB::transaction(function () use($params) {
+                foreach($params as $ack){
+                    $data = SiteAcknowledge::where('site_name', $ack->site_name)->first();
+
+                    if(empty($data)){
+                        $data = new SiteAcknowledge();
+                        $data->site_name = $ack->site_name;
+                    }
+
+                    $data->fill(json_decode(json_encode($ack), true));
+
+                    $data->save();
+                }
+            }, 3);
+        }catch(Exception $e){
+            throw $e;
+        }
 
         return response()->json(new ApiResponse($params));
     }

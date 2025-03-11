@@ -24,7 +24,6 @@ class SiteAcknowledge extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'site_name',
         'renstra',
         'perolehan',
         'pemanfaatan'
