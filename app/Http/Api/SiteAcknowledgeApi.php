@@ -22,9 +22,15 @@ class SiteAcknowledgeApi extends Controller
     }
 
     public function list(){
-        $params = request()->json();
-
         $data = SiteAcknowledge::get();
+
+        return response()->json(new ApiResponse($data));
+    }
+
+    public function get(){
+        $params = request()->json()->all();
+
+        $data = SiteAcknowledge::where('site_name', $params['site_name'])->first();
 
         return response()->json(new ApiResponse($data));
     }

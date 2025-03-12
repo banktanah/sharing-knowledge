@@ -21,5 +21,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('site-acknowledge')->group(function () {
     Route::get('/list', [SiteAcknowledgeApi::class, 'list']);
+    Route::post('/get', [SiteAcknowledgeApi::class, 'get']);
     Route::post('/update', [SiteAcknowledgeApi::class, 'update']);
 });
