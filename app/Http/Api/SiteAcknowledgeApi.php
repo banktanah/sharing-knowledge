@@ -30,13 +30,21 @@ class SiteAcknowledgeApi extends Controller
     public function get(){
         $params = request()->json()->all();
 
-        $data = SiteAcknowledge::where('site_name', $params['site_name'])->first();
+        $site_name_arr = explode("/", $params['site_name']); //omit acq year
+
+        $data = SiteAcknowledge::where('site_name', $site_name_arr[0])->first();
 
         return response()->json(new ApiResponse($data));
     }
 
     public function update(){
         $params = request()->json()->all();
+
+        foreach($params as &$row){
+            $site_name_arr = explode("/", $row['site_name']); //omit acq year
+            $row['site_name'] = $site_name_arr[0];
+        }
+        unset($row);
 
         $params = json_decode(json_encode($params));
 
