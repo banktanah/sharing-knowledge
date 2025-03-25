@@ -26,7 +26,8 @@ class SiteAcknowledge extends Model
     protected $fillable = [
         'renstra',
         'perolehan',
-        'pemanfaatan'
+        'pemanfaatan',
+        'pengelolaan'
     ];
 
     /**
